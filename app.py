@@ -254,9 +254,6 @@ def generate_and_save_html_files(data_folder):
     except Exception as e:
         print(f"Error in generate_and_save_html_files: {str(e)}")
 
-# @salesforce.tokengetter
-# def get_salesforce_oauth_token():
-#     return session.get('salesforce_token')
 
 @app.route('/')
 def index():
