@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css?family=Poppins " rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Gabarito " rel="stylesheet">
+
+
+
+    <title>My Salesforce ToolBox</title>
+    
+    
+</head>
+<body>
+    <h1>Knowledge Articles Tool</h1>
+    <div class="download-link-container">
+        <a href="{{ url_for('download_template_csv') }}" class="btn btn-primary" >Download Template CSV</a>
+        <br>
+    </div>
+    
+    <form id="uploadForm" enctype="multipart/form-data">
+      
+    <div>
+        <label class="small" for="csv_File">Select CSV File:</label>
+        <input type="file" id="csv_File" name="csv_File" accept=".csv">
+        <!-- <label class="small" for="user_input">Data Category:</label> -->
+        <!-- <input type="text" id="user_input" name="user_input" placeholder="Enter text..."> -->
+
+        <button class="button-74" type="button" id="uploadButton">GO</button>
+        <!-- Add an event listener to the "Download ZIP" button -->
+<button id="downloadZipButton" type="button">Download ZIP</button>
+
+    </div>
+    </form>
+    
+    <div id="uploadMessage" style="display: none;"></div>
+    
+
+    <head>
+    <title>XML Generator</title>
+</head>
+
+    <h1>Custom Labels Tool</h1>
+    <form method="POST" action="/generate_and_download_xml">
+        <label class="small"  for="xml_user_input">Enter Label Names (separated by space, comma, or newline):</label>
+        <textarea id="xml_user_input" name="xml_user_input" placeholder="Enter words..."></textarea>
+        <button type="submit">Generate XML</button>
+    </form>
+
+
+
+
+
+
+    <script>
+    
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            const xmlUserInput = document.getElementById('xml_user_input').value;
+
+            if (!xmlUserInput) {
+                alert('Please enter some words.');
+                return;
+            }
+
+            // Send the user input to the server to generate and download the XML file
+            fetch('/generate_and_download_xml', {
+                method: 'POST',
+                body: new URLSearchParams({ xml_user_input: xmlUserInput }),
+            })
+            .then(response => {
+                if (response.status === 200) {
+                    alert('XML Download Successful');
+                } else {
+                    alert('XML Download Failed. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    });
+
+
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const uploadButton = document.getElementById('uploadButton');
+        uploadButton.addEventListener('click', uploadFile);
+    });
+    
+    
+// Add an event listener to the "Download ZIP" button
+const downloadZipButton = document.getElementById('downloadZipButton');
+downloadZipButton.addEventListener('click', downloadZipFile);
+
+    
+    
+    function uploadFile() {
+        console.log("Script loaded");
+        const csvFileInput = document.getElementById('csv_File');
+        //const userFileInput = document.getElementById('user_input');
+        const csvFile = csvFileInput.files[0];
+        //const userText = userFileInput.value;
+    
+        if (!csvFile) {
+            alert('Please select a CSV file');
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('csv_File', csvFile);
+        //formData.append('user_input', userText);
+    
+        fetch('/upload', {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => {
+            if (response.status === 200) {
+                alert('Upload Successful');
+                <!-- downloadZipButton.removeAttribute('disabled'); -->
+            } else {
+                alert('Upload Failed. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }
+    
+    // Function to trigger the ZIP file download
+function downloadZipFile() {
+    // Redirect to the /download_zip endpoint to trigger the download
+    <!-- window.location.href = '/download_zip'; -->
+    // Create an anchor element
+    const downloadLink = document.createElement('a');
+    downloadLink.href = '/download_zip'; // Set the URL of the ZIP file on the server
+    //downloadLink.download = 'your_filename.zip'; // Set the desired filename for the downloaded file
+
+    // Programmatically click the download link
+    downloadLink.click();
+}
+
+    
+    </script>
+
+
+    <style>
+    h1 {
+        font-family: 'Poppins', sans-serif;
+        font-size: 35px;
+        font-weight: bold;
+        //font-style: italic;
+    }
+
+    .small {
+        font-family: 'Gabarito', sans-serif;
+        font-size: 16px;
+        //font-weight: bold;
+        //font-style: italic;
+    }
+    .download-link-container {
+        margin-bottom: 10px;
+    }
+
+
+
+    
+</style>
+</body>
+</html>
