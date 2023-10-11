@@ -1,5 +1,4 @@
 from flask import Flask, request, jsonify, render_template, send_from_directory,send_file, redirect, session, url_for
-from flask_oauthlib.client import OAuth
 import os
 import csv
 import uuid
@@ -11,36 +10,7 @@ import tempfile
 import io
 
 app = Flask(__name__)
-# app.secret_key = 'krishnakd@27@earth1616' 
 
-# oauth = OAuth(app)
-
-# salesforce = oauth.remote_app(
-#     'salesforce',
-#     consumer_key='3MVG9n_HvETGhr3BGmUTQ0M2u0DQdFuaM2.vI1gUzvumSj.mo3nI600d5vKmy18O.td8FphzXCvutrPsyxCAQ',
-#     consumer_secret='B2096FD718078A28A1883CB9B8A2F2AB478CA9F25154CA638FC3FE628682FAF3',
-#     request_token_params={'scope': 'full refresh_token'},
-#     #base_url='https://login.salesforce.com/services/oauth2/'
-#     base_url='https://login.salesforce.com/',  # Corrected base_url
-#     request_token_url=None,
-#     access_token_method='POST',
-#     access_token_url='https://login.salesforce.com/services/oauth2/token',  # Corrected access_token_url
-#     authorize_url='https://login.salesforce.com/services/oauth2/authorize',  # Corrected authorize_url
-# )
-
-# Define the callback route
-# @app.route('/oauth_callback')
-# def oauth_callback():
-#     response = salesforce.authorized_response()
-
-#     if response is None or response.get('access_token') is None:
-#         return 'Authentication failed: reason={}, error={}'.format(
-#             request.args['error_reason'],
-#             request.args['error_description']
-#         )
-
-#     session['salesforce_token'] = (response['access_token'], '')
-#     return redirect(url_for('index'))  # Redirect to the desired route after successful authentication
 
 global_user_input = None
 
@@ -292,23 +262,6 @@ def generate_and_save_html_files(data_folder):
 def index():
     return render_template('index.html')
 
-# @app.route('/login')
-# def login():
-#     return salesforce.authorize(callback=url_for('authorized', _external=True))
-
-# @app.route('/logout')
-# def logout():
-#     session.pop('salesforce_token', None)
-#     return 'Logged out'
-
-# @app.route('/login/authorized')
-# def authorized():
-#     response = salesforce.authorized_response()
-#     if response and response.get('access_token'):
-#         session['salesforce_token'] = (response['access_token'], '')
-#         return 'Logged in'
-#     else:
-#         return 'Access denied'
     
     
 def generate_and_save_new_csv(parsed_csv_data):
