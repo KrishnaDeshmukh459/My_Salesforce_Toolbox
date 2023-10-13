@@ -178,6 +178,7 @@ def download_zip():
 
         # Set the Content-Disposition header
         response.headers["Content-Disposition"] = f"attachment; filename=downloaded_files.zip"
+        os.remove('downloaded_files.zip')
 
         return response
     except Exception as e:
