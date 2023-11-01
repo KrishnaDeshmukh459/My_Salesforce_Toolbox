@@ -243,10 +243,14 @@ def generate_and_save_html_files(data_folder):
             # For example, you can access row['column_name'] to get data from a specific column
             # and use it to construct HTML content.
             # Construct the HTML content as per your requirements.
-            
-            content=row['Answer']
-            # Generate HTML content with structured paragraphs, bullet points, and sub-bullet points
-            html_content = process_structure(content)
+            if re.search(r'<\s*(?:html|p|span)', row['Answer'], re.IGNORECASE):
+                # If the content already contains HTML tags, directly use it as the HTML content
+                html_content = row['Answer']
+            else:
+                # Process the content to generate HTML
+                content = row['Answer']
+                # Generate HTML content with structured paragraphs, bullet points, and sub-bullet points
+                html_content = process_structure(content)
             
 
             # Save the HTML content to the HTML file
